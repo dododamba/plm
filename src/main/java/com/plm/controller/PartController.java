@@ -54,7 +54,7 @@ public class PartController {
 
 	}
 
-	@GetMapping(value = "/part/free")
+	@PutMapping(value = "/part/free")
 	public ResponseEntity<?> free(@RequestHeader("userId") String userId, @Valid @RequestBody PartRequest request) {
 
 		partDAO.free(userId, request.getReference(), request.getVersion(), request.getIteration());
@@ -63,7 +63,7 @@ public class PartController {
 
 	}
 
-	@GetMapping(value = "/part/set-state")
+	@PutMapping(value = "/part/set-state")
 	public ResponseEntity<?> setState(@RequestHeader("userId") String userId,
 			@Valid @RequestBody PartSetStateRequest request) {
 
@@ -73,7 +73,7 @@ public class PartController {
 		return ResponseEntity.ok(new JsonObjectResponse(true, "part state set !", null));
 	}
 
-	@GetMapping(value = "/part/create")
+	@PostMapping(value = "/part/create")
 	public ResponseEntity<?> createPart(@Valid @RequestBody Part part) {
 
 		partDAO.create(part);
@@ -81,7 +81,7 @@ public class PartController {
 		return ResponseEntity.ok(new JsonObjectResponse(true, "part state set !", null));
 	}
 
-	@GetMapping(value = "/part/revise")
+	@PutMapping(value = "/part/revise")
 	public ResponseEntity<?> revise(@RequestHeader("userId") String userId, @Valid @RequestBody PartRequest request) {
 
 		partDAO.revise(userId, request.getReference(), request.getVersion(), request.getIteration());
