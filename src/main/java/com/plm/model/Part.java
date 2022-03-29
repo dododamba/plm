@@ -1,6 +1,8 @@
 package com.plm.model;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 import javax.persistence.*;
 
 /*
@@ -17,6 +19,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "parts")
+@IdClass(com.plm.model.Part.PartPK.class)
+
 public class Part implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -227,7 +231,36 @@ public class Part implements Serializable {
 		this.reference = reference;
 	}
 	
-	
+	public static class PartPK implements Serializable {
+		private String reference;
+		private String version;
+		private int iteration;
+		public PartPK() {
+			
+		}
+		public PartPK(String reference, String version, int iteration) {
+			this.reference = reference;
+			this.version = version;
+			this.iteration = iteration;
+		}
+		@Override
+		public int hashCode() {
+			return Objects.hash(iteration, reference, version);
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			PartPK other = (PartPK) obj;
+			return iteration == other.iteration && Objects.equals(reference, other.reference)
+					&& Objects.equals(version, other.version);
+		}
+		
+	}
 	
 	
 }
