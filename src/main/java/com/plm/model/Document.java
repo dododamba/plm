@@ -18,26 +18,17 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "documents")
-@IdClass(com.plm.model.Document.DocumentPK.class)
+@IdClass(DocumentPK.class)
 
 public class Document implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-	@SequenceGenerator(name = "sequenceGenerator")
-	@Column(name = "id")
-	private Long id;
-	
-	
-	
-	@Column
 	private String reference;
-	@Column
+	@Id
 	private String version;
-	@Column
+	@Id
 	private int iteration;
 
 	@Column
@@ -69,31 +60,10 @@ public class Document implements Serializable {
 	}
 
 	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
 	 * @return the reference
 	 */
 	public String getReference() {
 		return reference;
-	}
-
-	/**
-	 * @param reference the reference to set
-	 */
-	public void setReference(String reference) {
-		this.reference = reference;
 	}
 
 	/**
@@ -104,24 +74,10 @@ public class Document implements Serializable {
 	}
 
 	/**
-	 * @param version the version to set
-	 */
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	/**
 	 * @return the iteration
 	 */
 	public int getIteration() {
 		return iteration;
-	}
-
-	/**
-	 * @param iteration the iteration to set
-	 */
-	public void setIteration(int iteration) {
-		this.iteration = iteration;
 	}
 
 	/**
@@ -132,24 +88,10 @@ public class Document implements Serializable {
 	}
 
 	/**
-	 * @param reserved the reserved to set
-	 */
-	public void setReserved(boolean reserved) {
-		this.reserved = reserved;
-	}
-
-	/**
 	 * @return the reservedBy
 	 */
 	public String getReservedBy() {
 		return reservedBy;
-	}
-
-	/**
-	 * @param reservedBy the reservedBy to set
-	 */
-	public void setReservedBy(String reservedBy) {
-		this.reservedBy = reservedBy;
 	}
 
 	/**
@@ -160,24 +102,10 @@ public class Document implements Serializable {
 	}
 
 	/**
-	 * @param lifeCycleTemplate the lifeCycleTemplate to set
-	 */
-	public void setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
-		this.lifeCycleTemplate = lifeCycleTemplate;
-	}
-
-	/**
 	 * @return the lifeCycleState
 	 */
 	public String getLifeCycleState() {
 		return lifeCycleState;
-	}
-
-	/**
-	 * @param lifeCycleState the lifeCycleState to set
-	 */
-	public void setLifeCycleState(String lifeCycleState) {
-		this.lifeCycleState = lifeCycleState;
 	}
 
 	/**
@@ -188,13 +116,6 @@ public class Document implements Serializable {
 	}
 
 	/**
-	 * @param versionSchema the versionSchema to set
-	 */
-	public void setVersionSchema(VersionSchema versionSchema) {
-		this.versionSchema = versionSchema;
-	}
-
-	/**
 	 * @return the documentAttribute1
 	 */
 	public String getDocumentAttribute1() {
@@ -202,17 +123,73 @@ public class Document implements Serializable {
 	}
 
 	/**
-	 * @param documentAttribute1 the documentAttribute1 to set
-	 */
-	public void setDocumentAttribute1(String documentAttribute1) {
-		this.documentAttribute1 = documentAttribute1;
-	}
-
-	/**
 	 * @return the documentAttribute2
 	 */
 	public String getDocumentAttribute2() {
 		return documentAttribute2;
+	}
+
+	/**
+	 * @param reference the reference to set
+	 */
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	/**
+	 * @param iteration the iteration to set
+	 */
+	public void setIteration(int iteration) {
+		this.iteration = iteration;
+	}
+
+	/**
+	 * @param reserved the reserved to set
+	 */
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
+	}
+
+	/**
+	 * @param reservedBy the reservedBy to set
+	 */
+	public void setReservedBy(String reservedBy) {
+		this.reservedBy = reservedBy;
+	}
+
+	/**
+	 * @param lifeCycleTemplate the lifeCycleTemplate to set
+	 */
+	public void setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
+		this.lifeCycleTemplate = lifeCycleTemplate;
+	}
+
+	/**
+	 * @param lifeCycleState the lifeCycleState to set
+	 */
+	public void setLifeCycleState(String lifeCycleState) {
+		this.lifeCycleState = lifeCycleState;
+	}
+
+	/**
+	 * @param versionSchema the versionSchema to set
+	 */
+	public void setVersionSchema(VersionSchema versionSchema) {
+		this.versionSchema = versionSchema;
+	}
+
+	/**
+	 * @param documentAttribute1 the documentAttribute1 to set
+	 */
+	public void setDocumentAttribute1(String documentAttribute1) {
+		this.documentAttribute1 = documentAttribute1;
 	}
 
 	/**
@@ -224,65 +201,34 @@ public class Document implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((documentAttribute1 == null) ? 0 : documentAttribute1.hashCode());
-		result = prime * result + ((documentAttribute2 == null) ? 0 : documentAttribute2.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + iteration;
-		result = prime * result + ((lifeCycleState == null) ? 0 : lifeCycleState.hashCode());
-		result = prime * result + ((lifeCycleTemplate == null) ? 0 : lifeCycleTemplate.hashCode());
-		result = prime * result + ((reference == null) ? 0 : reference.hashCode());
-		result = prime * result + (reserved ? 1231 : 1237);
-		result = prime * result + ((reservedBy == null) ? 0 : reservedBy.hashCode());
-		result = prime * result + ((version == null) ? 0 : version.hashCode());
-		result = prime * result + ((versionSchema == null) ? 0 : versionSchema.hashCode());
-		return result;
+		return Objects.hash(documentAttribute1, documentAttribute2, iteration, lifeCycleState, lifeCycleTemplate,
+				reference, reserved, reservedBy, version, versionSchema);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Document other = (Document) obj;
+		return Objects.equals(documentAttribute1, other.documentAttribute1)
+				&& Objects.equals(documentAttribute2, other.documentAttribute2) && iteration == other.iteration
+				&& Objects.equals(lifeCycleState, other.lifeCycleState)
+				&& Objects.equals(lifeCycleTemplate, other.lifeCycleTemplate)
+				&& Objects.equals(reference, other.reference) && reserved == other.reserved
+				&& Objects.equals(reservedBy, other.reservedBy) && Objects.equals(version, other.version)
+				&& Objects.equals(versionSchema, other.versionSchema);
 	}
 
 	@Override
 	public String toString() {
-		return "Document [id=" + id + ", reference=" + reference + ", version=" + version + ", iteration=" + iteration
-				+ ", reserved=" + reserved + ", reservedBy=" + reservedBy + ", lifeCycleTemplate=" + lifeCycleTemplate
+		return "Document [reference=" + reference + ", version=" + version + ", iteration=" + iteration + ", reserved="
+				+ reserved + ", reservedBy=" + reservedBy + ", lifeCycleTemplate=" + lifeCycleTemplate
 				+ ", lifeCycleState=" + lifeCycleState + ", versionSchema=" + versionSchema + ", documentAttribute1="
 				+ documentAttribute1 + ", documentAttribute2=" + documentAttribute2 + "]";
 	}
 
-    
-	public static class DocumentPK implements Serializable {
-		private String reference;
-		private String version;
-		private int iteration;
-		public DocumentPK() {
-			
-		}
-		public DocumentPK(String reference, String version, int iteration) {
-			this.reference = reference;
-			this.version = version;
-			this.iteration = iteration;
-		}
-		@Override
-		public int hashCode() {
-			return Objects.hash(iteration, reference, version);
-		}
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			DocumentPK other = (DocumentPK) obj;
-			return iteration == other.iteration && Objects.equals(reference, other.reference)
-					&& Objects.equals(version, other.version);
-		}
-		
-	}
-
 }
-
-
-
-
-

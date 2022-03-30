@@ -1,9 +1,11 @@
 package com.plm.services;
 
+import java.util.Collection;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.plm.dao.PartDAO;
 import com.plm.model.Document;
@@ -23,6 +25,7 @@ import com.plm.repository.PartRepository;
 |*/
 
 @Service
+@Transactional
 public class PartService implements PartDAO {
 	private PartRepository partRepository;
 	private DocumentRepository documentRepository;
@@ -33,7 +36,7 @@ public class PartService implements PartDAO {
 		this.documentRepository = documentRepository;
 	}
 
-	public void reserve(String userId, String reference, String version, int iteration) {
+	public boolean reserve(String userId, String reference, String version, int iteration) {
 
 		Part part = partRepository.findByReferenceAndVersionAndIteration(reference, version, iteration);
 
@@ -69,11 +72,15 @@ public class PartService implements PartDAO {
 				nextIteration.setDocumentAttribute2(document.getDocumentAttribute2());
 
 				documentRepository.save(nextIteration);
+				return true;
 			}
+
 		}
+
+		return false;
 	}
 
-	public void update(String userId, String reference, String version, int iteration, String partAttribute1,
+	public boolean update(String userId, String reference, String version, int iteration, String partAttribute1,
 			String partAttribute2) {
 
 		Part part = partRepository.findByReferenceAndVersionAndIteration(reference, version, iteration);
@@ -84,10 +91,12 @@ public class PartService implements PartDAO {
 			part.setPartAttribute2(partAttribute2);
 
 			partRepository.saveAndFlush(part);
+			return true;
 		}
+		return false;
 	}
 
-	public void free(String userId, String reference, String version, int iteration) {
+	public boolean free(String userId, String reference, String version, int iteration) {
 
 		Part part = partRepository.findByReferenceAndVersionAndIteration(reference, version, iteration);
 
@@ -104,11 +113,14 @@ public class PartService implements PartDAO {
 				document.setReservedBy(null);
 
 				documentRepository.saveAndFlush(document);
+				return true;
 			}
 		}
+
+		return false;
 	}
 
-	public void setState(String userId, String reference, String version, int iteration, String state) {
+	public boolean setState(String userId, String reference, String version, int iteration, String state) {
 
 		Part part = partRepository.findByReferenceAndVersionAndIteration(reference, version, iteration);
 
@@ -123,11 +135,15 @@ public class PartService implements PartDAO {
 				document.setLifeCycleState(state);
 
 				documentRepository.saveAndFlush(document);
+
+				return false;
 			}
 		}
+
+		return false;
 	}
 
-	public void revise(String userId, String reference, String version, int iteration) {
+	public boolean revise(String userId, String reference, String version, int iteration) {
 
 		Part part = partRepository.findByReferenceAndVersionAndIteration(reference, version, iteration);
 
@@ -165,8 +181,12 @@ public class PartService implements PartDAO {
 				nextDocumentVersion.setDocumentAttribute2(document.getDocumentAttribute2());
 
 				documentRepository.save(nextDocumentVersion);
+
+				return true;
 			}
+
 		}
+		return false;
 	}
 
 	@Override
@@ -185,6 +205,18 @@ public class PartService implements PartDAO {
 	public Set<Document> getLinkedDocuments(Part part) {
 
 		return null;
+	}
+
+	@Override
+	public void delete(Part part) {
+	  partRepository.delete(part);
+
+	}
+
+	@Override
+	public Collection<Part> all() {
+		// TODO Auto-generated method stub
+		return partRepository.findAll();
 	}
 
 }

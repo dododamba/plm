@@ -1,5 +1,8 @@
 package com.plm.controller;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -10,9 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.plm.dao.DocumentDAO;
+import com.plm.model.Document;
 import com.plm.request.DocumentRequest;
 import com.plm.request.DocumentSetStateRequest;
 import com.plm.request.DocumentUpdateRequest;
@@ -30,6 +35,7 @@ import com.plm.response.JsonObjectResponse;
 |*/
 
 @RestController
+@RequestMapping(name = "api")
 public class DocumentController {
 	private DocumentDAO documentDAO;
 
@@ -42,8 +48,11 @@ public class DocumentController {
 	public ResponseEntity<?> reserve(@RequestHeader("userId") String userId,
 			@Valid @RequestBody DocumentRequest request) {
 
-		documentDAO.reserve(userId, request.getReference(), request.getVersion(), request.getIteration());
-		return ResponseEntity.ok(new JsonObjectResponse(true, "Document reserve done !", null));
+		if (documentDAO.reserve(userId, request.getReference(), request.getVersion(), request.getIteration())) {
+
+			return ResponseEntity.ok(new JsonObjectResponse(true, "Document reserve done !", null));
+		}
+		return ResponseEntity.ok(new JsonObjectResponse(true, "Error, Document reserve not done !", null));
 
 	}
 
@@ -60,9 +69,11 @@ public class DocumentController {
 	@GetMapping(value = "/document/free")
 	public ResponseEntity<?> free(@RequestHeader("userId") String userId, @Valid @RequestBody DocumentRequest request) {
 
-		documentDAO.free(userId, request.getReference(), request.getVersion(), request.getIteration());
+		if (documentDAO.free(userId, request.getReference(), request.getVersion(), request.getIteration())) {
+			return ResponseEntity.ok(new JsonObjectResponse(true, "Free document  done !", null));
+		}
 
-		return ResponseEntity.ok(new JsonObjectResponse(true, "Free document  done !", null));
+		return ResponseEntity.ok(new JsonObjectResponse(true, "Free document not  done !", null));
 
 	}
 
@@ -70,18 +81,49 @@ public class DocumentController {
 	public ResponseEntity<?> setState(@RequestHeader("userId") String userId,
 			@Valid @RequestBody DocumentSetStateRequest request) {
 
-		documentDAO.setState(userId, request.getReference(), request.getVersion(), request.getIteration(),
-				request.getState());
+		if (documentDAO.setState(userId, request.getReference(), request.getVersion(), request.getIteration(),
+				request.getState())) {
+			return ResponseEntity.ok(new JsonObjectResponse(true, "Document state set !", null));
 
-		return ResponseEntity.ok(new JsonObjectResponse(true, "Document state set !", null));
+		}
+
+		return ResponseEntity.ok(new JsonObjectResponse(true, "Document state not set !", null));
 	}
 
 	@GetMapping(value = "/document/revise")
-	public ResponseEntity<?> revise(@RequestHeader("userId") String userId, @Valid @RequestBody DocumentRequest request) {
+	public ResponseEntity<?> revise(@RequestHeader("userId") String userId,
+			@Valid @RequestBody DocumentRequest request) {
 
-		documentDAO.revise(userId, request.getReference(), request.getVersion(), request.getIteration());
+		if (documentDAO.revise(userId, request.getReference(), request.getVersion(), request.getIteration())) {
 
-		return ResponseEntity.ok(new JsonObjectResponse(true, "Document revised !", null));
+			return ResponseEntity.ok(new JsonObjectResponse(true, "Document revised !", null));
+		}
+
+		return ResponseEntity.ok(new JsonObjectResponse(true, "Document not revised !", null));
+
+	}
+
+	@GetMapping(value = "/document")
+	public ResponseEntity<?> all() {
+
+		if (documentDAO.all().isEmpty()) {
+			Collection<Document> documents = documentDAO.all();
+			Map<String, Object> map = new HashMap<>();
+			map.put("documents", documents);
+			return ResponseEntity.ok(new JsonObjectResponse(true, "Document not revised !", null));
+
+		}
+
+		return ResponseEntity.ok(new JsonObjectResponse(true, "Documents empty !", null));
+
+	}
+
+	@GetMapping(value = "/document/all")
+	public ResponseEntity<?> create(@Valid @RequestBody Document request) {
+
+		documentDAO.create(request);
+
+		return ResponseEntity.ok(new JsonObjectResponse(true, "Document created !", null));
 
 	}
 

@@ -16,251 +16,178 @@ import javax.persistence.*;
 |
 |*/
 
-
 @Entity
 @Table(name = "parts")
-@IdClass(com.plm.model.Part.PartPK.class)
+@IdClass(PartPK.class)
 
 public class Part implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-	@SequenceGenerator(name = "sequenceGenerator")
-	@Column(name = "id")
-	private Long id;
-	
-	@Column
 	private String version;
-	
-	@Column
+
+	@Id
 	private String reference;
-	
-	
-	@Column
+
+	@Id
 	private int iteration;
-	
+
 	@Column
 	private boolean reserved;
 	@Column
-	private String  reservedBy;
+	private String reservedBy;
 
 	@ManyToOne
 	private LifeCycleTemplate lifeCycleTemplate;
 	@Column
 	private String lifeCycleState;
-	
+
 	@ManyToOne
 	private VersionSchema versionSchema;
-	
+
 	@Column
 	private String partAttribute1;
 	@Column
 	private String partAttribute2;
-	
-	public Part() 
-	{
-		
-	}
-	
-	
-	
 
-	public Part(String reference, String version , int iteration) {
-		
+	public Part() {
+
+	}
+
+	public Part(String reference, String version, int iteration) {
+
 		this.version = version;
 		this.reference = reference;
 		this.iteration = iteration;
 	}
 
-
-
-
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
+	public Part(String version, String reference, int iteration, boolean reserved, String reservedBy,
+			LifeCycleTemplate lifeCycleTemplate, String lifeCycleState, VersionSchema versionSchema,
+			String partAttribute1, String partAttribute2) {
+		
+		this.version = version;
+		this.reference = reference;
+		this.iteration = iteration;
+		this.reserved = reserved;
+		this.reservedBy = reservedBy;
+		this.lifeCycleTemplate = lifeCycleTemplate;
+		this.lifeCycleState = lifeCycleState;
+		this.versionSchema = versionSchema;
+		this.partAttribute1 = partAttribute1;
+		this.partAttribute2 = partAttribute2;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the version
-	 */
 	public String getVersion() {
 		return version;
 	}
 
-	/**
-	 * @param version the version to set
-	 */
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	/**
-	 * @return the iteration
-	 */
-	public int getIteration() {
-		return iteration;
-	}
-
-	/**
-	 * @param iteration the iteration to set
-	 */
-	public void setIteration(int iteration) {
-		this.iteration = iteration;
-	}
-
-	/**
-	 * @return the reserved
-	 */
-	public boolean isReserved() {
-		return reserved;
-	}
-
-	/**
-	 * @param reserved the reserved to set
-	 */
-	public void setReserved(boolean reserved) {
-		this.reserved = reserved;
-	}
-
-	/**
-	 * @return the reservedBy
-	 */
-	public String getReservedBy() {
-		return reservedBy;
-	}
-
-	/**
-	 * @param reservedBy the reservedBy to set
-	 */
-	public void setReservedBy(String reservedBy) {
-		this.reservedBy = reservedBy;
-	}
-
-	/**
-	 * @return the lifeCycleTemplate
-	 */
-	public LifeCycleTemplate getLifeCycleTemplate() {
-		return lifeCycleTemplate;
-	}
-
-	/**
-	 * @param lifeCycleTemplate the lifeCycleTemplate to set
-	 */
-	public void setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
-		this.lifeCycleTemplate = lifeCycleTemplate;
-	}
-
-	/**
-	 * @return the lifeCycleState
-	 */
-	public String getLifeCycleState() {
-		return lifeCycleState;
-	}
-
-	/**
-	 * @param lifeCycleState the lifeCycleState to set
-	 */
-	public void setLifeCycleState(String lifeCycleState) {
-		this.lifeCycleState = lifeCycleState;
-	}
-
-	/**
-	 * @return the versionSchema
-	 */
-	public VersionSchema getVersionSchema() {
-		return versionSchema;
-	}
-
-	/**
-	 * @param versionSchema the versionSchema to set
-	 */
-	public void setVersionSchema(VersionSchema versionSchema) {
-		this.versionSchema = versionSchema;
-	}
-
-	/**
-	 * @return the partAttribute1
-	 */
-	public String getPartAttribute1() {
-		return partAttribute1;
-	}
-
-	/**
-	 * @param partAttribute1 the partAttribute1 to set
-	 */
-	public void setPartAttribute1(String partAttribute1) {
-		this.partAttribute1 = partAttribute1;
-	}
-
-	/**
-	 * @return the partAttribute2
-	 */
-	public String getPartAttribute2() {
-		return partAttribute2;
-	}
-
-	/**
-	 * @param partAttribute2 the partAttribute2 to set
-	 */
-	public void setPartAttribute2(String partAttribute2) {
-		this.partAttribute2 = partAttribute2;
-	}
-
-	/**
-	 * @return the reference
-	 */
 	public String getReference() {
 		return reference;
 	}
 
-	/**
-	 * @param reference the reference to set
-	 */
+	public int getIteration() {
+		return iteration;
+	}
+
+	public boolean isReserved() {
+		return reserved;
+	}
+
+	public String getReservedBy() {
+		return reservedBy;
+	}
+
+	public LifeCycleTemplate getLifeCycleTemplate() {
+		return lifeCycleTemplate;
+	}
+
+	public String getLifeCycleState() {
+		return lifeCycleState;
+	}
+
+	public VersionSchema getVersionSchema() {
+		return versionSchema;
+	}
+
+	public String getPartAttribute1() {
+		return partAttribute1;
+	}
+
+	public String getPartAttribute2() {
+		return partAttribute2;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 	public void setReference(String reference) {
 		this.reference = reference;
 	}
-	
-	public static class PartPK implements Serializable {
-		private String reference;
-		private String version;
-		private int iteration;
-		public PartPK() {
-			
-		}
-		public PartPK(String reference, String version, int iteration) {
-			this.reference = reference;
-			this.version = version;
-			this.iteration = iteration;
-		}
-		@Override
-		public int hashCode() {
-			return Objects.hash(iteration, reference, version);
-		}
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			PartPK other = (PartPK) obj;
-			return iteration == other.iteration && Objects.equals(reference, other.reference)
-					&& Objects.equals(version, other.version);
-		}
-		
+
+	public void setIteration(int iteration) {
+		this.iteration = iteration;
 	}
+
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
+	}
+
+	public void setReservedBy(String reservedBy) {
+		this.reservedBy = reservedBy;
+	}
+
+	public void setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
+		this.lifeCycleTemplate = lifeCycleTemplate;
+	}
+
+	public void setLifeCycleState(String lifeCycleState) {
+		this.lifeCycleState = lifeCycleState;
+	}
+
+	public void setVersionSchema(VersionSchema versionSchema) {
+		this.versionSchema = versionSchema;
+	}
+
+	public void setPartAttribute1(String partAttribute1) {
+		this.partAttribute1 = partAttribute1;
+	}
+
+	public void setPartAttribute2(String partAttribute2) {
+		this.partAttribute2 = partAttribute2;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(iteration, lifeCycleState, lifeCycleTemplate, partAttribute1, partAttribute2, reference,
+				reserved, reservedBy, version, versionSchema);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Part other = (Part) obj;
+		return iteration == other.iteration && Objects.equals(lifeCycleState, other.lifeCycleState)
+				&& Objects.equals(lifeCycleTemplate, other.lifeCycleTemplate)
+				&& Objects.equals(partAttribute1, other.partAttribute1)
+				&& Objects.equals(partAttribute2, other.partAttribute2) && Objects.equals(reference, other.reference)
+				&& reserved == other.reserved && Objects.equals(reservedBy, other.reservedBy)
+				&& Objects.equals(version, other.version) && Objects.equals(versionSchema, other.versionSchema);
+	}
+
+	@Override
+	public String toString() {
+		return "Part [version=" + version + ", reference=" + reference + ", iteration=" + iteration + ", reserved="
+				+ reserved + ", reservedBy=" + reservedBy + ", lifeCycleTemplate=" + lifeCycleTemplate
+				+ ", lifeCycleState=" + lifeCycleState + ", versionSchema=" + versionSchema + ", partAttribute1="
+				+ partAttribute1 + ", partAttribute2=" + partAttribute2 + "]";
+	}
+
 	
 	
 }
