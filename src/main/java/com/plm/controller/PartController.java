@@ -2,11 +2,13 @@ package com.plm.controller;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,14 +40,16 @@ import com.plm.response.JsonObjectResponse;
 |*/
 
 @RestController
-@RequestMapping(name = "api")
+@RequestMapping(name = "/api")
 public class PartController {
 
 	private PartDAO partDAO;
+	private MessageSource messageSource;
 
 	@Autowired
-	public PartController(PartDAO partDAO) {
+	public PartController(PartDAO partDAO, MessageSource messageSource) {
 		this.partDAO = partDAO;
+		this.messageSource = messageSource;
 	}
 
 	@PostMapping(value = "/part/create")
@@ -57,76 +61,91 @@ public class PartController {
 	}
 
 	@PostMapping(value = "/part/reserve")
-	public ResponseEntity<?> reserve(@RequestHeader("userId") String userId, @Valid @RequestBody PartRequest request) {
+	public ResponseEntity<?> reserve(@RequestHeader(name = "Accept-Language", required = false) Locale locale,
+			@RequestHeader("userId") String userId, @Valid @RequestBody PartRequest request) {
 
 		if (partDAO.reserve(userId, request.getReference(), request.getVersion(), request.getIteration())) {
 
-			return ResponseEntity.ok(new JsonObjectResponse(true, "Part reserve done !", null));
+			return ResponseEntity.ok(
+					new JsonObjectResponse(true, messageSource.getMessage("part.reserve.done", null, locale), null));
 		}
-		return ResponseEntity.ok(new JsonObjectResponse(true, "Error, Part reserve not done !", null));
+		return ResponseEntity
+				.ok(new JsonObjectResponse(true, messageSource.getMessage("part.reserve.done", null, locale), null));
 
 	}
 
 	@PutMapping(value = "/part/update")
-	public ResponseEntity<?> update(@Valid @RequestBody Part part) {
+	public ResponseEntity<?> update(@RequestHeader(name = "Accept-Language", required = false) Locale locale,
+			@Valid @RequestBody Part part) {
 
 		partDAO.update(part);
-		return ResponseEntity.ok(new JsonObjectResponse(true, "Part update done !", null));
+		return ResponseEntity
+				.ok(new JsonObjectResponse(true, messageSource.getMessage("part.update.done", null, locale), null));
 
 	}
 
 	@GetMapping(value = "/part/free")
-	public ResponseEntity<?> free(@RequestHeader("userId") String userId, @Valid @RequestBody PartRequest request) {
+	public ResponseEntity<?> free(@RequestHeader(name = "Accept-Language", required = false) Locale locale,
+			@RequestHeader("userId") String userId, @Valid @RequestBody PartRequest request) {
 
 		if (partDAO.free(userId, request.getReference(), request.getVersion(), request.getIteration())) {
-			return ResponseEntity.ok(new JsonObjectResponse(true, "Free part  done !", null));
+			return ResponseEntity
+					.ok(new JsonObjectResponse(true, messageSource.getMessage("part.free.done", null, locale), null));
 		}
 
-		return ResponseEntity.ok(new JsonObjectResponse(true, "Free part not  done !", null));
+		return ResponseEntity
+				.ok(new JsonObjectResponse(true, messageSource.getMessage("part.free.not.done", null, locale), null));
 
 	}
 
 	@GetMapping(value = "/part/set-state")
-	public ResponseEntity<?> setState(@RequestHeader("userId") String userId,
-			@Valid @RequestBody PartSetStateRequest request) {
+	public ResponseEntity<?> setState(@RequestHeader(name = "Accept-Language", required = false) Locale locale,
+			@RequestHeader("userId") String userId, @Valid @RequestBody PartSetStateRequest request) {
 
 		if (partDAO.setState(userId, request.getReference(), request.getVersion(), request.getIteration(),
 				request.getState())) {
-			return ResponseEntity.ok(new JsonObjectResponse(true, "Part state set !", null));
+			return ResponseEntity
+					.ok(new JsonObjectResponse(true, messageSource.getMessage("part.set.done", null, locale), null));
 
 		}
 
-		return ResponseEntity.ok(new JsonObjectResponse(true, "Part state not set !", null));
+		return ResponseEntity
+				.ok(new JsonObjectResponse(true, messageSource.getMessage("part.set.not.done", null, locale), null));
 	}
 
 	@GetMapping(value = "/part/revise")
-	public ResponseEntity<?> revise(@RequestHeader("userId") String userId, @Valid @RequestBody PartRequest request) {
+	public ResponseEntity<?> revise(@RequestHeader(name = "Accept-Language", required = false) Locale locale,
+			@RequestHeader("userId") String userId, @Valid @RequestBody PartRequest request) {
 
 		if (partDAO.revise(userId, request.getReference(), request.getVersion(), request.getIteration())) {
 
-			return ResponseEntity.ok(new JsonObjectResponse(true, "Part revised !", null));
+			return ResponseEntity
+					.ok(new JsonObjectResponse(true, messageSource.getMessage("part.revise.done", null, locale), null));
 		}
 
-		return ResponseEntity.ok(new JsonObjectResponse(true, "Part not revised !", null));
+		return ResponseEntity
+				.ok(new JsonObjectResponse(true, messageSource.getMessage("part.revise.not.done", null, locale), null));
 
 	}
 
 	@GetMapping(value = "/part")
-	public ResponseEntity<?> all() {
+	public ResponseEntity<?> all(@RequestHeader(name = "Accept-Language", required = false) Locale locale) {
 
 		if (partDAO.all().isEmpty()) {
 			Collection<Part> parts = partDAO.all();
 			Map<String, Object> map = new HashMap<>();
 			map.put("parts", parts);
-			return ResponseEntity.ok(new JsonObjectResponse(true, "Part not revised !", null));
+			return ResponseEntity
+					.ok(new JsonObjectResponse(true, messageSource.getMessage("part.list", null, locale), null));
 
 		}
 
-		return ResponseEntity.ok(new JsonObjectResponse(true, "Parts empty !", null));
+		return ResponseEntity
+				.ok(new JsonObjectResponse(true, messageSource.getMessage("part.empty", null, locale), null));
 
 	}
 
-	@GetMapping(value = "/part/all")
+	@GetMapping(value = "/part/create")
 	public ResponseEntity<?> create(@Valid @RequestBody Part request) {
 
 		partDAO.create(request);
